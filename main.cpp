@@ -421,6 +421,7 @@ int main() {
             (maze->maze(--begin, --end)) ? cout << "Y" : cout << "N";
             cout << endl;
         }
+        cout << '-' << endl;
         cin >> rooms >> halls >> queries;
     }
 
