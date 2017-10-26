@@ -391,7 +391,9 @@ int main() {
     int v1, v2, ways;
     Graph *city;
 
-    while (scanf("%d%d", &corners, &streets) != -1) {
+    cin >> corners >> streets;
+
+    while (corners != 0 && streets != 0) {
         city = new Graph(corners);
 
         for (int i = 0; i < streets; ++i) {
@@ -407,6 +409,7 @@ int main() {
         }
         (city->funcionaPorFavor()) ? cout << "1" : cout << "0";
         cout << endl;
+        cin >> corners >> streets;
     }
     return 0;
 }
