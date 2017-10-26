@@ -104,7 +104,7 @@ void Vertex::addEdge(Vertex next) {
         vertexAlreadyExists |= this->edges[i].getLabel() == next.getLabel();
     }
     if (vertexAlreadyExists) {
-        cout << "Vertex " << this->label << " - " << next.label << " already exists" << endl;
+        //cout << "Vertex " << this->label << " - " << next.label << " already exists" << endl;
         return;
     }
 
@@ -282,9 +282,9 @@ public:
 
     void removeEdge(int predecessor, int successor);
 
-    void bfs(int begin);
+    bool bfs(int begin);
 
-    bool funcionaPorFavor ();
+    bool irEVir ();
 };
 
 Graph::Graph(int nVertex) {
@@ -332,7 +332,8 @@ void Graph::removeEdge(int predecessor, int successor) {
 }
 
 
-void Graph::bfs(int begin) {
+bool Graph::bfs(int begin) {
+    bool res = true;
     if (begin >= this->size) {
         cout << "Index out of bounds in method bfs." << endl;
         cout << "begin = " << begin << endl;
@@ -347,6 +348,7 @@ void Graph::bfs(int begin) {
         this->allVertex[i].setColor(WHITE);
         this->allVertex[i].setDad(nullptr);
     }
+
     // mark as visited
     root->setColor(GREY);
     root->setBfsDistance(0);
@@ -373,12 +375,17 @@ void Graph::bfs(int begin) {
         }
         actual->setColor(BLACK);
     }
+
+    for (int i = 0; i < this->size && res; ++i) {
+        res &= allVertex[i].getColor()!=WHITE;
+    }
+    return res;
 }
 
-bool Graph::funcionaPorFavor() {
+bool Graph::irEVir() {
     bool res = true;
-    for (int i = 0; i < this->size; ++i) {
-        res &= (this->allVertex[i].getInDegree() + this->allVertex[i].getOutDegree()) > 1;
+    for (int i = 0; i < this->size && res; ++i) {
+        res &= bfs(i);
     }
     return res;
 }
@@ -386,7 +393,6 @@ bool Graph::funcionaPorFavor() {
 
 
 int main() {
-
     int streets, corners;
     int v1, v2, ways;
     Graph *city;
@@ -407,10 +413,10 @@ int main() {
                 city->addEdge(v1, v2);
             }
         }
-        (city->funcionaPorFavor()) ? cout << "1" : cout << "0";
+        (city->irEVir()) ? cout << "1" : cout << "0";
         cout << endl;
         cin >> corners >> streets;
     }
+
     return 0;
 }
-
