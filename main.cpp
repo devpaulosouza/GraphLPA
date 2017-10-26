@@ -285,6 +285,8 @@ public:
     bool bfs(int begin);
 
     bool irEVir ();
+
+    bool maze(int begin, int end);
 };
 
 Graph::Graph(int nVertex) {
@@ -390,35 +392,37 @@ bool Graph::irEVir() {
     return res;
 }
 
+bool Graph::maze(int begin, int end) {
+    bfs(begin);
+    return allVertex[end].getColor() != WHITE;
+}
 
 
 int main() {
-    int streets, corners;
-    int v1, v2, ways;
-    Graph *city;
+    int halls, rooms;
+    int v1, v2, queries;
+    Graph *maze;
 
-    cin >> corners >> streets;
+    cin >> rooms >> halls >> queries;
 
-    while (corners != 0 && streets != 0) {
-        city = new Graph(corners);
+    while (rooms != 0 && halls != 0 && queries != 0) {
+        maze = new Graph(rooms); // 7 323 4623
 
-        for (int i = 0; i < streets; ++i) {
-            cin >> v1 >> v2 >> ways;
+        for (int i = 0; i < halls; ++i) {
+            cin >> v1 >> v2;
 
             v1--; v2--;
-            if (ways == 2) {
-                city->addEdge(v1, v2);
-                city->addEdge(v2, v1);
-            } else {
-                city->addEdge(v1, v2);
-            }
+            maze->addEdge(v1, v2);
+            maze->addEdge(v2, v1);
         }
-        (city->irEVir()) ? cout << "1" : cout << "0";
-        cout << endl;
-        cin >> corners >> streets;
+        int begin, end;
+        for (int i = 0; i < queries; ++i) {
+            cin >> begin >> end;
+            (maze->maze(--begin, --end)) ? cout << "Y" : cout << "N";
+            cout << endl;
+        }
+        cin >> rooms >> halls >> queries;
     }
 
     return 0;
 }
-
-//
